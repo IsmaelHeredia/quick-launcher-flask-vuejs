@@ -1,0 +1,38 @@
+{% extends 'layouts/base_admin.html' %}
+
+{% block content %}
+
+<div id="appTareas">
+
+    <hr />
+
+    <div class="jumbotron">
+        <fieldset>
+            <div class="text-center">
+                <h1 class="title-confirm">Confirmación de eliminación</h1>
+                <p class="lead details-confirm">¿Estás seguro que desea eliminar la tarea [[ name ]] ?</p>
+
+                <div class="text-center">
+                    <p class="lead">
+                    <div class="buttons-confirm">
+                        <button type="submit" class="btn btn-primary button-delete" @click="remove()"><i
+                                class="fa fa-trash icon" aria-hidden="true"></i> Borrar</button>
+                        <button type="button" class="btn btn-primary" onclick="javascript:window.history.back();"><i
+                                class="fa fa-rotate-left icon" aria-hidden="true"></i> Volver</button>
+                    </div>
+                    </p>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+
+</div>
+
+<script>
+    const load_task = '{{ task_id }}';
+    const process_task = '{{ process_id }}';
+</script>
+
+<script src="{{url_for('static', filename='operations/tasks.js')}}"></script>
+
+{% endblock %}

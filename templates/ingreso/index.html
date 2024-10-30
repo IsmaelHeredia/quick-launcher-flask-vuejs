@@ -1,0 +1,42 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+
+<div id="appIngreso">
+
+  <div class="card card-primary ingreso">
+    <div class="card-body">
+      <div class="card-block">
+        <fieldset>
+          <legend class="legend-card">Iniciar sesión</legend>
+
+          <div class="form-group mb-3">
+            <input type="text" class="form-control" placeholder="Usuario" v-model="usuario" />
+          </div>
+
+          <p v-if="submit == true && usuario == ''" class="error-form">
+            El usuario es obligatorio
+          </p>
+
+          <div class="form-group mb-3">
+            <input type="password" class="form-control" placeholder="Clave" v-model="clave" />
+          </div>
+
+          <p v-if="submit == true && clave == ''" class="error-form">
+            La clave es obligatoria
+          </p>
+
+          <div class="center-div">
+            <button type="button" class="btn btn-primary button-login" @click="login()"><i class="fa fa-sign-in icon"
+                aria-hidden="true"></i> Ingresar</button>
+          </div>
+        </fieldset>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script src="{{url_for('static', filename='operations/login.js')}}"></script>
+
+{% endblock %}

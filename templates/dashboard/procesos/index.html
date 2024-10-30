@@ -1,0 +1,66 @@
+{% extends 'layouts/base_admin.html' %}
+
+{% block content %}
+
+<div id="appProcesos">
+
+    <a href="/dashboard/procesos/nuevo">
+        <button type="button" class="btn btn-primary button-add-process"><i class="fa fa-plus icon"
+                aria-hidden="true"></i>
+            Agregar proceso</button>
+    </a>
+
+    <hr />
+
+    <div v-if="processes.length > 0">
+        <h1 class="title-tables">Procesos encontrados</h1>
+        <div class="processes-table">
+            <table class="table borderless">
+                <thead>
+                    <tr>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">URL</th>
+                        <th scope="col">Tiempo de espera</th>
+                        <th scope="col">Opción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="process in processes">
+                        <td>[[ process.name ]]</td>
+                        <td>[[ process.url ]]</td>
+                        <td>[[ process.timeout ]] segundos</td>
+                        <td>
+                            <a v-bind:href="`/dashboard/procesos/${process.id}/tareas`">
+                                <button type="button" class="btn btn-primary button-table"><i
+                                        class="fa fa-terminal icon" aria-hidden="true"></i>
+                                    Tareas</button>
+                            </a>
+                            <a v-bind:href="`/dashboard/procesos/${process.id}/editar`">
+                                <button type="button" class="btn btn-primary button-table"><i class="fa fa-pencil icon"
+                                        aria-hidden="true"></i>
+                                    Editar</button>
+                            </a>
+                            <a v-bind:href="`/dashboard/procesos/${process.id}/borrar`">
+                                <button type="button" class="btn btn-primary button-table"><i class="fa fa-trash icon"
+                                        aria-hidden="true"></i>
+                                    Borrar</button>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div v-else>
+        <h1 class="not-found">No se encontraron procesos</h1>
+    </div>
+
+</div>
+
+<script>
+    const list = true;
+</script>
+
+<script src="{{url_for('static', filename='operations/processes.js')}}"></script>
+
+{% endblock %}

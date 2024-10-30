@@ -1,0 +1,36 @@
+{% extends 'layouts/base_admin.html' %}
+
+{% block content %}
+
+<div id="appLogs">
+
+    <hr />
+
+    <div class="jumbotron">
+        <fieldset>
+            <div class="text-center">
+                <h1 class="title-confirm">Confirmación de acción</h1>
+                <p class="lead details-confirm">¿Estás seguro que desea cerrar [[ details ]] con PID [[ pid ]] ?</p>
+                <div class="text-center">
+                    <p class="lead">
+                    <div class="buttons-confirm">
+                        <button type="button" class="btn btn-primary button-confirm" @click="closeTask()"><i
+                                class="fa fa-times icon" aria-hidden="true"></i> Cerrar</button>
+                        <button type="button" class="btn btn-primary" onclick="javascript:window.history.back();"><i
+                                class="fa fa-rotate-left icon" aria-hidden="true"></i> Volver</button>
+                    </div>
+                    </p>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+
+</div>
+
+<script>
+    const load_logs = '{{ logs_id }}';
+</script>
+
+<script src="{{url_for('static', filename='operations/logs.js')}}"></script>
+
+{% endblock %}

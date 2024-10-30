@@ -1,0 +1,53 @@
+{% extends 'layouts/base_admin.html' %}
+
+{% block content %}
+
+<div id="appLogs">
+
+    <hr />
+
+    <div v-if="logs.length > 0">
+        <h1 class="title-tables">Logs encontrados</h1>
+        <div class="logs-table">
+            <table class="table borderless">
+                <thead>
+                    <tr>
+                        <th scope="col">Logs</th>
+                        <th scope="col">PID</th>
+                        <th scope="col">Opción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="log in logs">
+                        <td>[[ log.logs ]]</td>
+                        <td>[[ log.pid ]]</td>
+                        <td>
+                            <a v-bind:href="`/dashboard/logs/${log.id}/cerrarTarea`">
+                                <button type="button" class="btn btn-primary button-table"><i class="fa fa-times icon"
+                                        aria-hidden="true"></i>
+                                    Cerrar tarea</button>
+                            </a>
+                            <a v-bind:href="`/dashboard/logs/${log.id}/cerrarProceso`">
+                                <button type="button" class="btn btn-primary button-table"><i class="fa fa-times icon"
+                                        aria-hidden="true"></i>
+                                    Cerrar proceso</button>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div v-else>
+        <h1 class="not-found">No se encontraron registros</h1>
+    </div>
+
+</div>
+
+<script>
+    const list = true;
+</script>
+
+<script src="{{url_for('static', filename='operations/logs.js')}}"></script>
+
+{% endblock %}

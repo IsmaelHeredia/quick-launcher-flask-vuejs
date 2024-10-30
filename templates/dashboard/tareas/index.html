@@ -1,0 +1,58 @@
+{% extends 'layouts/base_admin.html' %}
+
+{% block content %}
+
+<div id="appTareas">
+
+    <a href="/dashboard/procesos/{{process_id}}/tareas/nuevo">
+        <button type="button" class="btn btn-primary button-add-task"><i class="fa fa-plus icon" aria-hidden="true"></i>
+            Agregar tarea</button>
+    </a>
+
+    <hr />
+
+    <div v-if="tasks.length > 0">
+        <h1 class="title-tables">Tareas de [[ process_name ]]</h1>
+        <div class="tasks-table">
+            <table class="table borderless">
+                <thead>
+                    <tr>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Comando</th>
+                        <th scope="col">Opción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="task in tasks">
+                        <td>[[ task.name ]]</td>
+                        <td>[[ task.command ]]</td>
+                        <td>
+                            <a v-bind:href="`/dashboard/procesos/{{process_id}}/tareas/${task.id}/editar`">
+                                <button type="button" class="btn btn-primary button-table"><i class="fa fa-pencil icon"
+                                        aria-hidden="true"></i>
+                                    Editar</button>
+                            </a>
+                            <a v-bind:href="`/dashboard/procesos/{{process_id}}/tareas/${task.id}/borrar`">
+                                <button type="button" class="btn btn-primary button-table"><i class="fa fa-trash icon"
+                                        aria-hidden="true"></i>
+                                    Borrar</button>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div v-else>
+        <h1 class="not-found">No se encontraron tareas</h1>
+    </div>
+
+</div>
+
+<script>
+    const load_tasks_by_process = '{{process_id}}';
+</script>
+
+<script src="{{url_for('static', filename='operations/tasks.js')}}"></script>
+
+{% endblock %}

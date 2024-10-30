@@ -1,0 +1,60 @@
+{% extends 'layouts/base_admin.html' %}
+
+{% block content %}
+
+<div id="appCuenta">
+
+    <hr />
+
+    <div class="card card-primary cuenta">
+        <div class="card-body">
+            <div class="card-block">
+                <fieldset>
+                    <legend class="legend-card">Actualizar datos de cuenta</legend>
+
+                    <div class="form-group mb-3">
+                        <input type="text" class="form-control" placeholder="Usuario" v-model="usuario" />
+                    </div>
+
+                    <p v-if="submit == true && usuario == ''" class="error-form">
+                        El usuario es obligatorio
+                    </p>
+
+                    <div class="form-group mb-3">
+                        <input type="text" class="form-control" placeholder="Nuevo usuario" v-model="nuevo_usuario" />
+                    </div>
+
+                    <p v-if="submit == true && usuario == ''" class="error-form">
+                        El nuevo usuario es obligatorio
+                    </p>
+
+                    <div class="form-group mb-3">
+                        <input type="password" class="form-control" placeholder="Clave" v-model="clave" />
+                    </div>
+
+                    <p v-if="submit == true && clave == ''" class="error-form">
+                        La clave es obligatoria
+                    </p>
+
+                    <div class="form-group mb-3">
+                        <input type="password" class="form-control" placeholder="Nueva clave" v-model="nueva_clave" />
+                    </div>
+
+                    <p v-if="submit == true && nueva_clave == ''" class="error-form">
+                        La nueva clave es obligatoria
+                    </p>
+
+                    <div class="center-div">
+                        <button type="button" class="btn btn-primary button-save" @click="save()"><i
+                                class="fa fa-floppy-o icon" aria-hidden="true"></i> Guardar</button>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="{{url_for('static', filename='operations/account.js')}}"></script>
+
+{% endblock %}

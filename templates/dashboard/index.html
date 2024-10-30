@@ -1,0 +1,56 @@
+{% extends 'layouts/base_admin.html' %}
+
+{% block content %}
+
+<div id="appProcesos">
+
+    <hr />
+
+    <div v-if="processes.length > 0">
+        <h1 class="title-dash">Procesos disponibles</h1>
+        <div class="procesos scrollbar-processes">
+
+            <div class="list-processes" v-for="process in processes">
+                <div :class="(processes_online.includes(process.id))?'process-name-online':'process-name-offline'">
+                    [[ process.name ]]
+                </div>
+                <div class="process-options">
+
+                    <button type="button" class="btn btn-primary button-process"
+                        v-if="!processes_online.includes(process.id)" @click="start_process(process.id)"><i
+                            class="fa fa-terminal icon" aria-hidden="true"></i>
+                        Iniciar</button>
+
+                    <button type="button" class="btn btn-primary button-process"
+                        v-if="processes_online.includes(process.id)" @click="stop_process(process.id)"><i
+                            class="fa fa-times icon" aria-hidden="true"></i>
+                        Detener</button>
+
+                    <a v-bind:href="`/dashboard/procesos/${process.id}/editar`">
+                        <button type="button" class="btn btn-primary button-process"><i class="fa fa-pencil icon"
+                                aria-hidden="true"></i>
+                            Editar</button>
+                    </a>
+                    <a v-bind:href="`/dashboard/procesos/${process.id}/borrar`">
+                        <button type="button" class="btn btn-primary button-process"><i class="fa fa-trash icon"
+                                aria-hidden="true"></i>
+                            Borrar</button>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div v-else>
+        <h1 class="not-found">No se encontraron procesos</h1>
+    </div>
+
+</div>
+
+<script>
+    const list = true;
+</script>
+
+<script src="{{url_for('static', filename='operations/processes.js')}}"></script>
+
+{% endblock %}

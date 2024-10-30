@@ -1,0 +1,64 @@
+{% extends 'layouts/base_admin.html' %}
+
+{% block content %}
+
+<div id="appTareas">
+
+    <hr />
+
+    <div class="card card-primary guardar-tarea">
+        <div class="card-body">
+            <div class="card-block">
+                <fieldset>
+                    <legend class="legend-card">Guardar tarea</legend>
+
+                    <div class="form-group mb-3">
+                        <input type="text" class="form-control" placeholder="Nombre de la tarea" v-model="name" />
+                    </div>
+
+                    <p v-if="submit == true && name == ''" class="error-form">
+                        El nombre es obligatorio
+                    </p>
+
+                    <div class="form-group mb-3">
+                        <input type="text" class="form-control" placeholder="Directorio" v-model="directory" />
+                    </div>
+
+                    <p v-if="submit == true && directory == ''" class="error-form">
+                        El directorio es obligatorio
+                    </p>
+
+                    <div class="form-group mb-3">
+                        <input type="text" class="form-control" placeholder="Comando" v-model="command" />
+                    </div>
+
+                    <p v-if="submit == true && command == ''" class="error-form">
+                        El comando es obligatorio
+                    </p>
+
+                    <div class="text-center">
+                        <p class="lead">
+                        <div class="buttons-save">
+                            <button type="submit" class="btn btn-primary button-save" @click="save()"><i
+                                    class="fa fa-floppy-o icon" aria-hidden="true"></i> Guardar</button>
+                            <button type="button" class="btn btn-primary" onclick="javascript:window.history.back();"><i
+                                    class="fa fa-rotate-left icon" aria-hidden="true"></i> Volver</button>
+                        </div>
+                        </p>
+                    </div>
+
+                </fieldset>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    const load_task = '{{ task_id }}';
+    const process_task = '{{ process_id }}';
+</script>
+
+<script src="{{url_for('static', filename='operations/tasks.js')}}"></script>
+
+{% endblock %}

@@ -1,0 +1,9 @@
+Flask
+Flask-Migrate
+Flask-SQLAlchemy
+Flask-Cors
+Flask-Session
+PyJWT
+marshmallow
+bcrypt
+psutil

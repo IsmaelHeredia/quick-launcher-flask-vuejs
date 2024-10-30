@@ -1,0 +1,61 @@
+{% extends 'layouts/base_admin.html' %}
+
+{% block content %}
+
+<div id="appProcesos">
+
+    <hr />
+
+    <div class="card card-primary guardar-proceso">
+        <div class="card-body">
+            <div class="card-block">
+                <fieldset>
+                    <legend class="legend-card">Guardar proceso</legend>
+
+                    <div class="form-group mb-3">
+                        <input type="text" class="form-control" placeholder="Nombre de proceso" v-model="name" />
+                    </div>
+
+                    <p v-if="submit == true && name == ''" class="error-form">
+                        El nombre es obligatorio
+                    </p>
+
+                    <div class="form-group mb-3">
+                        <input type="text" class="form-control" placeholder="URL" v-model="url" />
+                    </div>
+
+                    <p v-if="submit == true && url == ''" class="error-form">
+                        La URL es obligatoria
+                    </p>
+
+                    <div class="form-group mb-3">
+                        <input type="number" class="form-control" placeholder="Tiempo de espera" v-model="timeout" />
+                    </div>
+
+                    <p v-if="submit == true && timeout == ''" class="error-form">
+                        El tiempo de espera es obligatorio
+                    </p>
+
+                    <div class="text-center buttons-save">
+                        <p class="lead">
+                            <button type="button" class="btn btn-primary button-save" @click="save()"><i class="fa fa-floppy-o icon"
+                                    aria-hidden="true"></i> Guardar</button>
+                            <button type="button" class="btn btn-primary" onclick="javascript:window.history.back();"><i
+                                    class="fa fa-rotate-left icon" aria-hidden="true"></i> Volver</button>
+                        </p>
+                    </div>
+
+                </fieldset>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    const load_process = '{{ process_id }}';
+</script>
+
+<script src="{{url_for('static', filename='operations/processes.js')}}"></script>
+
+{% endblock %}
