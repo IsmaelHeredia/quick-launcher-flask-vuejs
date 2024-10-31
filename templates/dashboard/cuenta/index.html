@@ -13,7 +13,7 @@
                     <legend class="legend-card">Actualizar datos de cuenta</legend>
 
                     <div class="form-group mb-3">
-                        <input type="text" class="form-control" placeholder="Usuario" v-model="usuario" />
+                        <input type="text" class="form-control" placeholder="Usuario" v-model="usuario" readonly />
                     </div>
 
                     <p v-if="submit == true && usuario == ''" class="error-form">
@@ -54,6 +54,10 @@
     </div>
 
 </div>
+
+<script>
+    const userLoginAccount = '{{ session.quick_launcher_tmp }}';
+</script>
 
 <script src="{{url_for('static', filename='operations/account.js')}}"></script>
 

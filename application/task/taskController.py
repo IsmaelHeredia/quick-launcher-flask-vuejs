@@ -8,7 +8,7 @@ from marshmallow import ValidationError
 class TaskController:
     
     def getAll(self):
-        tasks = Task.query.all()
+        tasks = Task.query.order_by(Task.updated_at.desc()).all()
         data = TaskSchema(many=True).dump(tasks)
         response = send_success('Las tareas se listaron correctamente', data)
         return response

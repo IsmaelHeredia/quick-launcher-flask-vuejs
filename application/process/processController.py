@@ -9,7 +9,7 @@ from marshmallow import ValidationError
 class ProcessController:
     
     def getAll(self):
-        processes = Process.query.all()
+        processes = Process.query.order_by(Process.updated_at.desc()).all()
         data = ProcessSchema(many=True).dump(processes)
         response = send_success('Los procesos se listaron correctamente', data)
         return response
@@ -48,7 +48,7 @@ class ProcessController:
         
     def getTasks(self, id):
         process = Process.query.filter(Process.id == id).first()
-        tasks = Task.query.filter(Task.process_id == id).all()
+        tasks = Task.query.filter(Task.process_id == id).order_by(Task.updated_at.desc()).all()
         if process and tasks:
             data_process = ProcessSchema().dump(process)
             data_tasks = TaskSchema(many=True).dump(tasks)

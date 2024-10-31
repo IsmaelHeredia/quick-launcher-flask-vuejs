@@ -140,7 +140,7 @@ createApp({
                                     icon: 'success',
                                     confirmButtonText: 'Continuar'
                                 }).then(function () {
-                                    window.location = "/dashboard/processes";
+                                    window.location = "/dashboard/procesos";
                                 });
 
                             } else {

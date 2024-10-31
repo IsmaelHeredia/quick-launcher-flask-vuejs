@@ -42,12 +42,13 @@ class LauncherController:
             for child in parent.children(recursive=True):
                 child.kill()
             parent.kill()
-            with app.app_context():
-                logs = Logs.query.filter(Logs.pid == parent_pid).first()
-                db.session.delete(logs)
-                db.session.commit()
         except:
             print('Error stopping process with pid %s' % (parent_pid,))
+            
+        with app.app_context():
+            logs = Logs.query.filter(Logs.pid == parent_pid).first()
+            db.session.delete(logs)
+            db.session.commit()
     
     def launcher_process(self, id):
         

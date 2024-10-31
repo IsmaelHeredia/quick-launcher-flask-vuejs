@@ -18,13 +18,19 @@
 
                     <button type="button" class="btn btn-primary button-process"
                         v-if="!processes_online.includes(process.id)" @click="start_process(process.id)"><i
-                            class="fa fa-terminal icon" aria-hidden="true"></i>
+                            class="fa fa-play icon" aria-hidden="true"></i>
                         Iniciar</button>
 
                     <button type="button" class="btn btn-primary button-process"
                         v-if="processes_online.includes(process.id)" @click="stop_process(process.id)"><i
-                            class="fa fa-times icon" aria-hidden="true"></i>
+                            class="fa fa-stop icon" aria-hidden="true"></i>
                         Detener</button>
+
+                    <a v-bind:href="`/dashboard/procesos/${process.id}/tareas`">
+                        <button type="button" class="btn btn-primary button-process"><i class="fa fa-terminal icon"
+                                aria-hidden="true"></i>
+                            Tareas</button>
+                    </a>
 
                     <a v-bind:href="`/dashboard/procesos/${process.id}/editar`">
                         <button type="button" class="btn btn-primary button-process"><i class="fa fa-pencil icon"

@@ -3,7 +3,7 @@ const { createApp } = Vue;
 createApp({
     data() {
         return {
-            usuario: '',
+            usuario: userLoginAccount,
             nuevo_usuario: '',
             clave: '',
             nueva_clave: '',

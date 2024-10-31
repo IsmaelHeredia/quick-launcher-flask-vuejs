@@ -6,7 +6,7 @@ from functions import send_success, send_warning
 class LogsController:
     
     def getAll(self):
-        logs = Logs.query.all()
+        logs = Logs.query.order_by(Logs.updated_at.desc()).all()
         data = LogsSchema(many=True).dump(logs)
         response = send_success('Los registros de logs se listaron correctamente', data)
         return response
