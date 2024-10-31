@@ -22,17 +22,31 @@ Para la correcta instalación del sistema se deben seguir los siguiente pasos.
 
 En la carpeta principal se debe renombrar el archivo .env.example a solo .env y editar la configuración con los datos de tu conexión MySQL, el SECRET_KEY que seria la clave para generar el JWT.
 
-Una vez que se haya terminado de configurar el archivo .env se deben ejecutar los siguiente comandos para instalar las dependencias : 
+Para instalar la librería de conexión a MySQL en Linux el comando debería ser :
 
 ```
 sudo apt-get install python3-pymysql
 ```
 
+De lo contrario si están usando Windows seria :
+
+```
+pip install PyMySQL
+```
+
+Posteriormente debemos terminar de instalar las dependencias con el siguiente comando : 
+
 ```
 pip install -r requirements.txt
 ```
 
-Posteriormente para ejecutar las migraciones de Flask deben ejecutar los siguientes comandos :
+Para ejecutar Flask en Windows se debe hacer de la siguiente manera : 
+
+```
+python -m flask
+```
+
+De lo contrario si están usando Linux bastaría con usar simplemente el comando flask, teniendo en cuenta esto para ejecutar las migraciones de Flask deben ejecutar los siguientes comandos :
 
 ```
 flask db init
@@ -50,5 +64,5 @@ flask seed
 Finalmente para iniciar el sistema se debe ejecutar este comando : 
 
 ```
-flask --app main.py --debug run --port=7777
+flask --app main.py --debug run --port=8888
 ```
