@@ -109,7 +109,15 @@ def launcherStopProcessApi(id):
     controller = LauncherController()
     if request.method == 'GET':
         return controller.stop_process_id(id)
-    
+
+@app.route('/api/launcher/processes/stop', methods=['GET'])
+@AuthBack()
+def launcherStopAllProcessesApi():
+    controller = LauncherController()
+
+    if request.method == 'GET':
+        return controller.stop_all_processes()
+
 @app.route('/api/logs', methods=['GET'])
 @AuthBack()
 def logsApi():

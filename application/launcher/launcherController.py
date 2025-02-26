@@ -1,3 +1,4 @@
+import sys
 from flask import request
 from app import app, db
 from application.process.processModel import Process
@@ -11,6 +12,8 @@ import psutil
 import webbrowser
 import time
 
+from multiprocessing import Pool
+
 class LauncherController:
     
     def launch_process(self, process,task):
@@ -22,14 +25,24 @@ class LauncherController:
             directory = task.directory
             command = task.command
             
-            launchProcess = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, cwd=directory)
-            
+            launchProcess = subprocess.Popen(
+                command,
+                shell=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                cwd=directory,
+                text=True
+            )
             pid = launchProcess.pid
                         
             logs = Logs(process_id = process.id, task_id = task.id, pid = pid, logs = details)
             db.session.add(logs)
             db.session.commit()
             
+            for line in iter(launchProcess.stdout.readline, ''):
+                sys.stdout.write(line)
+                sys.stdout.flush()
+
             launchProcess.wait()
             
     def launch_url(self, url, timeout):
@@ -50,6 +63,22 @@ class LauncherController:
             db.session.delete(logs)
             db.session.commit()
     
+    def launch_task(self, task_id):
+        with app.app_context():
+            task = Task.query.get(task_id)
+            if task:
+                process = Process.query.get(task.process_id)
+                if process:
+                    self.launch_process(process, task)
+                else:
+                    return send_warning("Proceso no encontrado")
+            else:
+                return send_warning("Tarea no encontrada")
+
+    def launch_multiple_tasks(self, task_ids):
+        with Pool() as pool:
+            pool.map(self.launch_task, task_ids)
+
     def launcher_process(self, id):
         
         process = Process.query.filter(Process.id == id).first()
@@ -59,12 +88,15 @@ class LauncherController:
             tasks = Task.query.filter(Task.process_id == process.id)
             
             if tasks:
+
+                tasks_ids = []
             
-                for task in tasks:   
-                                                                                     
-                    threadProcess = threading.Thread(target=self.launch_process, args=[process,task])
-                    threadProcess.start()
-                    
+                for task in tasks:
+                    tasks_ids.append(task.id)   
+
+                thread = threading.Thread(target=self.launch_multiple_tasks, args=(tasks_ids,))
+                thread.start()
+                                                                                                         
                 threadURL = threading.Thread(target=self.launch_url, args=[process.url,process.timeout])
                 threadURL.start()
                                             
@@ -97,3 +129,12 @@ class LauncherController:
             self.killProcessByPID(process.pid)
         response = send_success('El proceso fue detenido correctamente')
         return response
+    
+    def stop_all_processes(self):
+        logs = Logs.query.all()
+        for log in logs:
+            pid = log.pid
+            self.killProcessByPID(pid)
+        response = send_success('Los procesos fueron detenidos correctamente')
+        return response
+

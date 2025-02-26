@@ -11,7 +11,10 @@
         <div class="procesos scrollbar-processes">
 
             <div class="list-processes" v-for="process in processes">
-                <div :class="(processes_online.includes(process.id))?'process-name-online':'process-name-offline'">
+                <div v-if="processes_online.includes(process.id)" class="process-name-online">
+                    <a :href="process.url" target="_blank" class="process-link">[[ process.name ]]</a>
+                </div>
+                <div v-else class="process-name-offline">
                     [[ process.name ]]
                 </div>
                 <div class="process-options">

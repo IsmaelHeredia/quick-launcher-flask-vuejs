@@ -8,15 +8,14 @@
   <title>Quick Launcher</title>
   <link href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
   <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-  {% if not session.theme %}
-  <link id="themeCSS" href="{{ url_for('static', filename='css/dark_style.css') }}" rel="stylesheet">
-  {% endif %}
-  {% if session.theme == 'dark' %}
-  <link id="themeCSS" href="{{ url_for('static', filename='css/dark_style.css') }}" rel="stylesheet">
-  {% endif %}
-  {% if session.theme == 'light' %}
-  <link id="themeCSS" href="{{ url_for('static', filename='css/light_style.css') }}" rel="stylesheet">
-  {% endif %}
+
+  <script>
+    (function () {
+      const theme = localStorage.getItem("theme") || "dark";
+      document.write(`<link id="themeCSS" href="/static/css/${theme}_style.css" rel="stylesheet">`);
+    })();
+  </script>
+
   <link href="{{ url_for('static', filename='font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
   <script src="{{ url_for('static', filename='vuejs3/js/vue.global.js') }}"></script>
   <script src="{{ url_for('static', filename='vuejs3/js/vue-router.global.js') }}"></script>
@@ -50,8 +49,8 @@
               Logs</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#aboutModal"><i class="fa fa-info-circle icon"
-                aria-hidden="true"></i> About</a>
+            <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#aboutModal"><i
+                class="fa fa-info-circle icon" aria-hidden="true"></i> About</a>
           </li>
         </ul>
         <ul class="navbar-nav ml-auto">
@@ -63,7 +62,8 @@
             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
               <a class="dropdown-item dropdown" href="/dashboard/cuenta"><i class="fa fa-cog icon"
                   aria-hidden="true"></i> Cuenta</a>
-              <a class="dropdown-item"  onclick="logout()" href="#"><i class="fa fa-sign-out icon" aria-hidden="true"></i> Salir </a>
+              <a class="dropdown-item" id="cerrar_sesion"><i class="fa fa-sign-out icon"
+                  aria-hidden="true"></i> Salir </a>
             </div>
           </li>
         </ul>
@@ -107,9 +107,33 @@
   </div>
   <script>
     function logout() {
-      sessionStorage.setItem(session_name, '');
-      window.location = "/dashboard/salir";
+      Swal.fire({
+        title: "¿Quieres detener los procesos antes de salir?",
+        text: "Esta acción puede tardar unos segundos.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Sí",
+        cancelButtonText: "No",
+        reverseButtons: true
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axios.get("/api/launcher/processes/stop")
+            .then(() => {
+              sessionStorage.setItem(session_name, '');
+              window.location = "/dashboard/salir";
+            })
+            .catch((error) => {
+              console.error("Error al detener los procesos:", error);
+              sessionStorage.setItem(session_name, '');
+              window.location = "/dashboard/salir";
+            });
+        } else {
+          sessionStorage.setItem(session_name, '');
+          window.location = "/dashboard/salir";
+        }
+      });
     }
+    document.getElementById("cerrar_sesion").addEventListener("click", logout);
   </script>
   <script src="{{url_for('static', filename='operations/theme.js')}}"></script>
 </body>
